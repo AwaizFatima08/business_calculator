@@ -23,6 +23,10 @@ Purpose: a simple, sleek large-key calculator for business use, daylight (light)
 - 2026-10-12: v1.0.0 (versionCode 1) built and signed: `releases/v1.0.0-1/`. Tested on the Galaxy A12 (release cold start ~0.75 s).
 - Privacy/terms: https://tools.homilabs.org/privacy#businesscalc and /terms#businesscalc (source `/mnt/storage/projects/homilabs_tools/site/`, uploaded to Hostinger).
 - Play listing kit: `docs/play-listing.md`.
+- Play Console (HomiLabs org account, Chrome profile slot `/u/1/`): app id 4975201122639423080, created 2026-10-12.
+  Done: all App content declarations (no ads, no data collected, rating All ages, audience 16+, not gov/financial/health), Business category,
+  contact homilabs.smc@gmail.com, store listing + graphics, all 181 countries, Production release draft "1.0.0 (1)" with notes.
+  The AAB (42 MB) must be dragged into the release by hand (the browser upload tool is capped at 10 MB).
 
 ## Commands
 - Tests: `flutter test` (34).

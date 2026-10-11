@@ -19,7 +19,7 @@ When an ad SDK is added, update the items marked **[ADS]** before that release g
 
 ## Short description (≤80)
 ```
-Big-key desk calculator: see every figure, M+ M− MR, GT, tax keys & a saved tape.
+Big-key calculator: see every figure, M+ M− MR, GT, tax keys & a saved tape.
 ```
 
 ## Full description (≤4000)
@@ -42,7 +42,7 @@ BUSINESS KEYS
 SAVED TAPE
 • Every finished calculation is saved with the time
 • Tap any result to reuse it
-• Copy or share the whole tape as text (WhatsApp, email, notes)
+• Copy or share the whole tape as text (to chats, email or notes)
 • Swipe to delete one entry, or clear the tape
 
 MADE FOR DAYLIGHT
