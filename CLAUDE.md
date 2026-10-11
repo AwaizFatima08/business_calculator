@@ -26,7 +26,9 @@ Purpose: a simple, sleek large-key calculator for business use, daylight (light)
 - Play Console (HomiLabs org account, Chrome profile slot `/u/1/`): app id 4975201122639423080, created 2026-10-12.
   Done: all App content declarations (no ads, no data collected, rating All ages, audience 16+, not gov/financial/health), Business category,
   contact homilabs.smc@gmail.com, store listing + graphics, all 181 countries, Production release draft "1.0.0 (1)" with notes.
-  The AAB (42 MB) must be dragged into the release by hand (the browser upload tool is capped at 10 MB).
+  2026-10-12: AAB uploaded (Homi dragged it in; browser upload tool is capped at 10 MB), 11 changes **sent for review**,
+  Production full rollout, managed publishing off (goes live automatically when approved). Next versionCode ≥ 2.
+  When live: swap the tools.homilabs.org card from "Coming soon" to the Play link (commented in index.html) and re-upload.
 
 ## Commands
 - Tests: `flutter test` (34).
