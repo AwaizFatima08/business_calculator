@@ -4,7 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../app.dart';
 
 /// Keep in step with `version:` in pubspec.yaml (a test checks this).
-const appVersion = '1.0.0';
+const appVersion = '1.1.0';
 
 const privacyUrl = 'https://tools.homilabs.org/privacy.html#businesscalc';
 const termsUrl = 'https://tools.homilabs.org/terms.html#businesscalc';
@@ -49,7 +49,8 @@ Future<void> showAboutSheet(BuildContext context) => showModalBottomSheet<void>(
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
               child: Text(
-                'No account, no tracking and no internet access. Your calculations stay on this phone.',
+                'No account and no sign-in. Your calculations stay on this phone and work offline. '
+                'The app is free and shows ads from Google AdMob.',
                 style: TextStyle(color: Palette.inkSoft),
               ),
             ),

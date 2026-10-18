@@ -2,30 +2,34 @@ import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../ads/ads.dart';
 import '../app.dart';
 import '../core/format.dart';
 import '../services/storage.dart';
 
-Future<void> showSettingsSheet(BuildContext context, Settings settings) => showModalBottomSheet<void>(
-  context: context,
-  showDragHandle: true,
-  isScrollControlled: true,
-  builder: (ctx) => Padding(
-    padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(ctx).bottom),
-    child: SettingsSheet(settings: settings),
-  ),
-);
+Future<void> showSettingsSheet(BuildContext context, Settings settings, [AdService ads = const NoAdService()]) =>
+    showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      isScrollControlled: true,
+      builder: (ctx) => Padding(
+        padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(ctx).bottom),
+        child: SettingsSheet(settings: settings, ads: ads),
+      ),
+    );
 
 class SettingsSheet extends StatefulWidget {
-  const SettingsSheet({super.key, required this.settings});
+  const SettingsSheet({super.key, required this.settings, this.ads = const NoAdService()});
 
   final Settings settings;
+  final AdService ads;
 
   @override
   State<SettingsSheet> createState() => _SettingsSheetState();
 }
 
 class _SettingsSheetState extends State<SettingsSheet> {
+  late final Future<bool> _privacyOptions = widget.ads.privacyOptionsRequired;
   late final _rate = TextEditingController(text: formatRate(widget.settings.taxRate));
   String? _rateError;
 
@@ -111,6 +115,20 @@ class _SettingsSheetState extends State<SettingsSheet> {
                 title: const Text('Key click sound', style: label),
                 value: s.clickSound,
                 onChanged: (v) => s.clickSound = v,
+              ),
+              // Only where the law requires a way to change ad consent (EEA, UK, CH).
+              FutureBuilder<bool>(
+                future: _privacyOptions,
+                builder: (context, snap) => snap.data != true
+                    ? const SizedBox.shrink()
+                    : ListTile(
+                        key: const Key('set-privacy-options'),
+                        contentPadding: EdgeInsets.zero,
+                        leading: const Icon(Icons.privacy_tip_outlined),
+                        title: const Text('Ad privacy options', style: label),
+                        subtitle: const Text('Change your consent for personalised ads'),
+                        onTap: widget.ads.showPrivacyOptions,
+                      ),
               ),
             ],
           ),

@@ -1,10 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-/// Ad scaffolding. Business Calculator ships with no ad SDK in v1; this file is the single seam
-/// where one plugs in (see docs/ads.md). Every place the app could show an ad
-/// is a named [AdPlacement], so a real network only needs to implement
-/// [AdService] and be returned from [AdService.fromEnvironment].
+import 'admob_ad_service.dart';
+
+/// Ad seam. Every place the app can show an ad is a named [AdPlacement]; the
+/// rest of the app only talks to [AdService]. AdMob lives in
+/// `admob_ad_service.dart`; see docs/ads.md.
 enum AdPlacement {
   /// Banner below the keypad on the calculator screen.
   homeBanner('home_banner'),
@@ -16,20 +17,34 @@ enum AdPlacement {
   final String id;
 }
 
-/// Standard banner height (AdMob/most networks: 320x50). The slot keeps this
-/// height reserved so turning ads on never shifts the controls.
+/// Height of the placeholder banner (AdMob's standard 320x50).
 const double bannerHeight = 50;
 
 abstract class AdService {
-  /// Chooses the implementation from `--dart-define=CALC_ADS=off|placeholder`.
-  /// Default: placeholders in debug/profile builds, nothing in release.
+  /// Chooses the implementation from `--dart-define=CALC_ADS=off|placeholder|admob`.
+  /// Default: AdMob in release builds (it stays ad-free unless the real unit ids
+  /// were passed, see scripts/build_release.sh), placeholders in debug/profile.
+  /// `admob` in a debug build uses Google's test units.
   factory AdService.fromEnvironment() {
     const mode = String.fromEnvironment('CALC_ADS');
-    final placeholder = mode == 'placeholder' || (mode.isEmpty && !kReleaseMode);
-    return placeholder ? PlaceholderAdService() : const NoAdService();
+    return switch (mode) {
+      'off' => const NoAdService(),
+      'admob' => AdMobAdService(),
+      'placeholder' => PlaceholderAdService(),
+      _ => kReleaseMode ? AdMobAdService() : PlaceholderAdService(),
+    };
   }
 
+  /// Consent (where required) and SDK start-up. Safe to call more than once;
+  /// never throws. Ads stay off until it has finished.
+  Future<void> init();
+
   bool get enabled;
+
+  /// True where the law requires a way to change ad consent (EEA, UK, CH).
+  Future<bool> get privacyOptionsRequired;
+
+  Future<void> showPrivacyOptions();
 
   /// A banner for [placement], or null when there is nothing to show.
   Widget? banner(AdPlacement placement);
@@ -43,7 +58,16 @@ class NoAdService implements AdService {
   const NoAdService();
 
   @override
+  Future<void> init() async {}
+
+  @override
   bool get enabled => false;
+
+  @override
+  Future<bool> get privacyOptionsRequired async => false;
+
+  @override
+  Future<void> showPrivacyOptions() async {}
 
   @override
   Widget? banner(AdPlacement placement) => null;
@@ -89,7 +113,16 @@ class PlaceholderAdService implements AdService {
   final List<String> log = [];
 
   @override
+  Future<void> init() async {}
+
+  @override
   bool get enabled => true;
+
+  @override
+  Future<bool> get privacyOptionsRequired async => false;
+
+  @override
+  Future<void> showPrivacyOptions() async {}
 
   @override
   Widget? banner(AdPlacement placement) => _PlaceholderBanner(placement);
@@ -136,7 +169,8 @@ class _PlaceholderBanner extends StatelessWidget {
   }
 }
 
-/// Reserves the banner area. Collapses to nothing when ads are off.
+/// The banner area under the keypad. Collapses to nothing when ads are off or
+/// no ad has loaded, so the keypad never shows an empty bar.
 class AdBannerSlot extends StatelessWidget {
   const AdBannerSlot({super.key, required this.ads, required this.placement});
   final AdService ads;
@@ -146,6 +180,9 @@ class AdBannerSlot extends StatelessWidget {
   Widget build(BuildContext context) {
     final b = ads.banner(placement);
     if (b == null) return const SizedBox.shrink();
-    return SizedBox(height: bannerHeight, width: double.infinity, child: b);
+    return SizedBox(
+      width: double.infinity,
+      child: Center(child: b),
+    );
   }
 }

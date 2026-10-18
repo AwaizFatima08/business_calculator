@@ -1,7 +1,7 @@
-# Business Calculator: Google Play listing kit (v1.0.0)
+# Business Calculator: Google Play listing kit (v1.1.0)
 
 Copy-paste values for Play Console. v1.0.0 (versionCode 1) ships **without ads**.
-When an ad SDK is added, update the items marked **[ADS]** before that release goes out.
+v1.1.0 adds Google AdMob (banner + interstitial, UMP consent). Store answers below are for 1.1.0.
 
 ## App details
 | Field | Value |
@@ -53,11 +53,12 @@ MADE FOR DAYLIGHT
 
 SMALL AND PRIVATE
 • No login and no account
-• Works fully offline
-• Needs no permissions
+• The calculator works fully offline
 • Your calculations stay on your phone
+
+Business Calculator is free and supported by ads.
 ```
-**[ADS]** Add a line such as "Business Calculator is free and supported by ads." when ads ship.
+*(v1.1.0: "Needs no permissions" removed and the ads line added — the AdMob SDK adds internet and advertising-ID permissions.)*
 
 ## Graphics (in `store-assets/`)
 | Asset | File | Spec |
@@ -69,13 +70,17 @@ SMALL AND PRIVATE
 Regenerate: `flutter test tool/store_screens_test.dart && flutter test tool/make_graphics_test.dart`.
 
 ## Store settings answers
-- **Ads**: *Does your app contain ads?* → **No** for v1.0.0. **[ADS]** switch to **Yes** in the release that adds the SDK.
+- **Ads**: *Does your app contain ads?* → **Yes** from v1.1.0 (was No for 1.0.0).
 - **App access**: All functionality is available without special access.
 - **Content rating** (IARC): category *Utility, Productivity, Communication, or Other*. Answer **No** to everything. Expected: Everyone / PEGI 3.
 - **Target audience**: 18+ (and optionally 16–17). Not under-13s (keeps the app out of the Families policy, which restricts ad networks later).
 - **News app**: No. **Government app**: No. **Financial features**: *My app doesn't provide any financial features* (it is a calculator; it handles no money, accounts or loans). **Health**: none.
 - **Data safety** (v1.0.0): *Does your app collect or share any of the required user data types?* → **No**. (Sharing the tape is user-initiated through the Android share sheet, which Play does not count as collection.)
-  **[ADS]** With AdMob: Device or other IDs, App interactions, Diagnostics — collected and shared for Advertising, Analytics, Fraud prevention; plus the `AD_ID` declaration.
+  **v1.1.0 (AdMob)**: *collects or shares data* → **Yes**. Data types: **Device or other IDs**; **Approximate location**;
+  **App interactions** (App activity); **Crash logs** and **Diagnostics** (App info and performance). For each: collected **and** shared,
+  not processed ephemerally, collection **required** (not optional), purposes **Advertising or marketing**, **Analytics**, **Fraud prevention, security and compliance**.
+  Encrypted in transit: **Yes**. Deletion request: users can reset the advertising ID (no account data to delete).
+  **Advertising ID** declaration: **Yes**, used for Advertising and Analytics.
 
 ## Release
 - Upload `releases/v1.0.0-1/businesscalc-1.0.0-1.aab` (gitignored; also in the local and Drive backups).

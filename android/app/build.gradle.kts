@@ -14,6 +14,10 @@ val keyProps = Properties().apply {
     if (f.exists()) f.inputStream().use { load(it) }
 }
 
+// Google's public test AdMob app id. Release builds get the real one from
+// ADMOB_APP_ID (scripts/build_release.sh reads it from .secrets/ad-units.env).
+val testAdmobAppId = "ca-app-pub-3940256099942544~3347511713"
+
 android {
     namespace = "com.homilabs.businesscalc"
     compileSdk = flutter.compileSdkVersion
@@ -35,6 +39,7 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        manifestPlaceholders["admobAppId"] = System.getenv("ADMOB_APP_ID") ?: testAdmobAppId
     }
 
     signingConfigs {

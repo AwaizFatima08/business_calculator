@@ -28,6 +28,8 @@ class _CalculatorPageState extends State<CalculatorPage> with WidgetsBindingObse
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    // Consent form (where required) and ad start-up, once the calculator is on screen.
+    WidgetsBinding.instance.addPostFrameCallback((_) => widget.services.ads.init());
   }
 
   @override
@@ -187,7 +189,7 @@ class _CalculatorPageState extends State<CalculatorPage> with WidgetsBindingObse
                           tooltip: 'Settings',
                           icon: const Icon(Icons.tune),
                           color: Palette.inkSoft,
-                          onPressed: () => showSettingsSheet(context, services.settings),
+                          onPressed: () => showSettingsSheet(context, services.settings, services.ads),
                         ),
                         IconButton(
                           visualDensity: VisualDensity.compact,
