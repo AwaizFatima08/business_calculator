@@ -31,11 +31,13 @@ cp build/app/outputs/flutter-apk/app-release.apk "$OUT/businesscalc-${VERSION/+/
 
 # The manifest must carry the real app id, never the test one.
 AAPT="$(ls -d "$HOME"/Android/Sdk/build-tools/*/ | tail -1)aapt"
-if ! "$AAPT" dump xmltree "$OUT/businesscalc-${VERSION/+/-}.apk" AndroidManifest.xml | grep -q "$ADMOB_APP_ID"; then
-  echo "FAIL: release manifest does not carry ADMOB_APP_ID"; exit 1
-fi
-if "$AAPT" dump xmltree "$OUT/businesscalc-${VERSION/+/-}.apk" AndroidManifest.xml | grep -q 3940256099942544; then
-  echo "FAIL: release manifest has the test AdMob app id"; exit 1
-fi
+MANIFEST="$("$AAPT" dump xmltree "$OUT/businesscalc-${VERSION/+/-}.apk" AndroidManifest.xml)"
+grep -q "$ADMOB_APP_ID" <<<"$MANIFEST" || { echo "FAIL: release manifest does not carry ADMOB_APP_ID"; exit 1; }
+if grep -q 3940256099942544 <<<"$MANIFEST"; then echo "FAIL: release manifest has the test AdMob app id"; exit 1; fi
+# The real unit ids must be compiled into the Dart code.
+LIBAPP="$(unzip -p "$OUT/businesscalc-${VERSION/+/-}.apk" lib/arm64-v8a/libapp.so | strings)"
+for id in "$AD_BANNER_ID" "$AD_INTERSTITIAL_ID"; do
+  grep -qF "$id" <<<"$LIBAPP" || { echo "FAIL: $id not found in libapp.so"; exit 1; }
+done
 (cd android && ./gradlew --stop >/dev/null 2>&1 || true)
 echo "Release ready in $OUT"

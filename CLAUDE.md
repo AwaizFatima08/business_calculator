@@ -11,7 +11,9 @@ Purpose: a simple, sleek large-key calculator for business use, daylight (light)
   M+/M− and TAX finish the calculation first (like =). Tax on an already-taxed result does not compound. GT sums every finished result (tax amends the last one).
 - Percent: `a + b%` / `a − b%` = percent of everything to the left; `× b%`, `÷ b%` use b/100.
 - Tape (history) saved on the phone (max 500), shareable/copyable as text. Expression, memory, GT and tape survive restarts.
-- Ads later: every slot goes through `lib/ads/ads.dart` (same seam as Beam). Debug/profile builds show placeholders; release shows nothing.
+- Ads (1.1.0): every slot goes through `lib/ads/ads.dart`; AdMob in `lib/ads/admob_ad_service.dart` with UMP consent (Settings → Ad privacy options where required), max content rating PG.
+  Banner under the keypad (collapses until loaded); interstitial only after closing the tape, none in the first 60 s, max one per 3 min.
+  Debug builds: placeholders, or `--dart-define=CALC_ADS=admob` for Google test ads. Release: **always `bash scripts/build_release.sh`** (real ids from `.secrets/ad-units.env`; a plain flutter build is ad-free).
 
 ## Code map
 - `lib/core/expression.dart` tokens + evaluator · `calculator.dart` state machine (pure, unit-tested) · `format.dart` · `tape_text.dart`
@@ -31,12 +33,12 @@ Purpose: a simple, sleek large-key calculator for business use, daylight (light)
   Live on Google Play by 2026-10-18; the listing name is now "AliCal-Business Calculator".
 - AdMob (2026-10-18): app registered in account homilabs.smc@gmail.com (publisher pub-2087846699268567), linked to the Play listing,
   AdMob review pending (2–3 days; ads limited until then). App `ca-app-pub-2087846699268567~4585639424`;
-  units `home_banner` (banner) and `history_closed` (interstitial) in `.secrets/ad-units.env`. **Not yet in the code** — v1.0.0 has no ad SDK.
-  Before shipping ads: google_mobile_ads + UMP consent, Play "Contains ads = Yes", Data safety + AD_ID declaration, privacy page update (see Beam's docs/ads.md).
+  units `home_banner` (banner) and `history_closed` (interstitial) in `.secrets/ad-units.env`.
+- 2026-10-19: v1.1.0 (versionCode 2) with AdMob built: `releases/v1.1.0-2/`. Tested on emulator `businesscalc_api35` (no phone attached): test banner, interstitial after closing the tape, 3-min cap.
   When live: swap the tools.homilabs.org card from "Coming soon" to the Play link (commented in index.html) and re-upload.
 
 ## Commands
-- Tests: `flutter test` (34).
+- Tests: `flutter test` (37).
 - Graphics: `flutter test tool/store_screens_test.dart && flutter test tool/make_graphics_test.dart` (icon, feature graphic, screenshots — drawn in code).
 - Release: `flutter build appbundle --release` and `flutter build apk --release` (signs via `android/key.properties` → `.secrets/businesscalc-upload.keystore`). Bump `version:` in pubspec **and** `appVersion` in `about_sheet.dart`; next versionCode ≥ 2.
 - Backup: `bash scripts/backup.sh` (commit first; the GitHub layer refuses untracked/uncommitted files).
