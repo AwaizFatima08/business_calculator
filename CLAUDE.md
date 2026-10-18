@@ -28,6 +28,11 @@ Purpose: a simple, sleek large-key calculator for business use, daylight (light)
   contact homilabs.smc@gmail.com, store listing + graphics, all 181 countries, Production release draft "1.0.0 (1)" with notes.
   2026-10-12: AAB uploaded (Homi dragged it in; browser upload tool is capped at 10 MB), 11 changes **sent for review**,
   Production full rollout, managed publishing off (goes live automatically when approved). Next versionCode ≥ 2.
+  Live on Google Play by 2026-10-18; the listing name is now "AliCal-Business Calculator".
+- AdMob (2026-10-18): app registered in account homilabs.smc@gmail.com (publisher pub-2087846699268567), linked to the Play listing,
+  AdMob review pending (2–3 days; ads limited until then). App `ca-app-pub-2087846699268567~4585639424`;
+  units `home_banner` (banner) and `history_closed` (interstitial) in `.secrets/ad-units.env`. **Not yet in the code** — v1.0.0 has no ad SDK.
+  Before shipping ads: google_mobile_ads + UMP consent, Play "Contains ads = Yes", Data safety + AD_ID declaration, privacy page update (see Beam's docs/ads.md).
   When live: swap the tools.homilabs.org card from "Coming soon" to the Play link (commented in index.html) and re-upload.
 
 ## Commands
