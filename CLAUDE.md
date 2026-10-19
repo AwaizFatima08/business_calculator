@@ -35,7 +35,8 @@ Purpose: a simple, sleek large-key calculator for business use, daylight (light)
   AdMob review pending (2–3 days; ads limited until then). App `ca-app-pub-2087846699268567~4585639424`;
   units `home_banner` (banner) and `history_closed` (interstitial) in `.secrets/ad-units.env`.
 - 2026-10-19: v1.1.0 (versionCode 2) with AdMob built: `releases/v1.1.0-2/`. Tested on emulator `businesscalc_api35` (no phone attached): test banner, interstitial after closing the tape, 3-min cap.
-  When live: swap the tools.homilabs.org card from "Coming soon" to the Play link (commented in index.html) and re-upload.
+  2026-10-19: tools.homilabs.org privacy (AdMob section) + hub card (Play link) uploaded and verified live; app-ads.txt already lists pub-2087846699268567.
+  Play: Ads = Yes, Advertising ID declared, Data safety (approx. location, app interactions, crash logs, diagnostics, device IDs — collected + shared, required; ads/analytics/fraud), description updated, production 1.1.0 (2) **sent for review**. Next versionCode ≥ 3.
 
 ## Commands
 - Tests: `flutter test` (37).
